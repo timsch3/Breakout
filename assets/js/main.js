@@ -1,20 +1,28 @@
 let gameWindow = document.getElementById('game-window')
+let bricks = []
 
 // Add divs
 for (let i = 1; i <= 18; i++) {
     let div = document.createElement('div')
     div.id = 'brick'
     if (i <= 6) {
-        div.style.gridColumn = `${i} / ${i + 1}`
-        if (i <= 6) {
-            div.style.gridRow = 1
-        } else if (i <= 12) {
-            div.style.gridRow = 2
-        } else if (i <= 18) {
-            div.style.gridRow = 3
-        }
+        div.style.gridRowStart = 1
+        div.style.gridRowEnd = 2
+        div.style.gridColumnStart = i
+        div.style.gridColumnEnd = i + 1
+    } else if (i <= 12) {
+        div.style.gridRowStart = 2
+        div.style.gridRowEnd = 3
+        div.style.gridColumnStart = i - 6
+        div.style.gridColumnEnd = i - 5
+    } else if (i <= 18) {
+        div.style.gridRowStart = 3
+        div.style.gridRowEnd = 4
+        div.style.gridColumnStart = i - 12
+        div.style.gridColumnEnd = i - 11
     }
     gameWindow.appendChild(div)
+    bricks.push(div)
 }
 
 // Add player and set its position
@@ -52,6 +60,7 @@ window.addEventListener('keyup', (key) => {
         movingLeft = false
     }
 })
+
 let playerSpeed = 0.8
 let playerMoved = 0
 let ballSpeed = 0.8
@@ -59,6 +68,7 @@ let ballMovedX = 0
 let ballMovedY = 0
 let ballMovingUp = true
 let ballMovingLeft = true
+let hitBrick = false
 setInterval(() => {
     // Move player
     if (movingLeft) {
@@ -81,6 +91,16 @@ setInterval(() => {
     }
     if (ball.offsetLeft < gameWindow.offsetLeft || gameWindow.offsetWidth + gameWindow.offsetLeft - ball.offsetWidth < ball.offsetLeft) {
         ballMovingLeft = !ballMovingLeft
+    }
+    for (i of bricks) {
+        if (ball.offsetTop < i.offsetTop + i.offsetHeight && ball.offsetLeft > i.offsetLeft && ball.offsetLeft < i.offsetLeft + i.offsetWidth && !hitBrick) {
+            ballMovingUp = !ballMovingUp
+            i.remove()
+            hitBrick = true
+        }
+        else {
+            hitBrick = false
+        }
     }
     // Move ball
     if (ballMovingLeft) {

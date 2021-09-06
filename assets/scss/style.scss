@@ -15,7 +15,9 @@ body {
         background-color: #A8BED8;
         display: grid;
         align-content: start;
+        justify-content: space-between;
         grid-template-columns: 6;
+        grid-auto-columns: 13.8vw;
         gap: 0.2vw;
         #brick {
             width: 13.8vw;
