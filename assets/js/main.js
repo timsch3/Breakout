@@ -1,14 +1,26 @@
 let gameWindow = document.getElementById('game-window')
-let player = document.getElementById('player')
 
-// Create and append divs
-for (let i = 0; i < 18; i++) {
+// Add divs
+for (let i = 1; i <= 18; i++) {
     let div = document.createElement('div')
     div.id = 'brick'
-    gameWindow.prepend(div)
+    if (i <= 6) {
+        div.style.gridColumn = `${i} / ${i + 1}`
+        if (i <= 6) {
+            div.style.gridRow = 1
+        } else if (i <= 12) {
+            div.style.gridRow = 2
+        } else if (i <= 18) {
+            div.style.gridRow = 3
+        }
+    }
+    gameWindow.appendChild(div)
 }
 
-// Set player position
+// Add player and set its position
+let player = document.createElement('div')
+player.id = 'player'
+gameWindow.appendChild(player)
 player.style.top = 'calc(' + gameWindow.offsetTop + 'px + 41vw)'
 player.style.left = 'calc(' + gameWindow.offsetLeft + 'px + 34vw)'
 

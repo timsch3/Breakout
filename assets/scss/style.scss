@@ -13,20 +13,14 @@ body {
         width: 84vw;
         height: 42vw;
         background-color: #A8BED8;
-        display: flex;
-        flex-wrap: wrap;
-        align-content: flex-start;
+        display: grid;
+        align-content: start;
+        grid-template-columns: 6;
+        gap: 0.2vw;
         #brick {
             width: 13.8vw;
-            margin-bottom: 0.2vw;
             height: 3vw;
             background-color: #4C5475;
-        }
-        #brick:not(:nth-of-type(6n)) {
-            margin-right: 0.2vw
-        }
-        #brick:nth-of-type(6n) {
-            width: 14vw
         }
         #player {
             width: 16vw;
