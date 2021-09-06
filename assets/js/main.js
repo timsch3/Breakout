@@ -52,25 +52,47 @@ window.addEventListener('keyup', (key) => {
         movingLeft = false
     }
 })
-
-// Move player
-let speed = 0.8
-let moved = 0
+let playerSpeed = 0.8
+let playerMoved = 0
+let ballSpeed = 0.8
+let ballMovedX = 0
+let ballMovedY = 0
+let ballMovingUp = true
+let ballMovingLeft = true
 setInterval(() => {
+    // Move player
     if (movingLeft) {
-        player.style.left = 'calc(' + gameWindow.offsetLeft + 'px + 34vw + ' + moved + 'vw)'
-        moved -= speed
+        player.style.left = 'calc(' + gameWindow.offsetLeft + 'px + 34vw + ' + playerMoved + 'vw)'
+        playerMoved -= playerSpeed
     }
     else if (movingRight) {
-        player.style.left = 'calc(' + gameWindow.offsetLeft + 'px + 34vw + ' + moved + 'vw)'
-        moved += speed
+        player.style.left = 'calc(' + gameWindow.offsetLeft + 'px + 34vw + ' + playerMoved + 'vw)'
+        playerMoved += playerSpeed
     }
-    if (moved > 34) {
-        moved = 34
+    if (playerMoved > 34) {
+        playerMoved = 34
     }
-    else if (moved < -34) {
-        moved = -34
+    else if (playerMoved < -34) {
+        playerMoved = -34
+    }
+    // Set ball movement variables
+    if (gameWindow.offsetTop > ball.offsetTop || gameWindow.offsetHeight + gameWindow.offsetTop - ball.offsetHeight < ball.offsetTop) {
+        ballMovingUp = !ballMovingUp
+    }
+    if (ball.offsetLeft < gameWindow.offsetLeft || gameWindow.offsetWidth + gameWindow.offsetLeft - ball.offsetWidth < ball.offsetLeft) {
+        ballMovingLeft = !ballMovingLeft
     }
     // Move ball
-
+    if (ballMovingLeft) {
+        ballMovedX -= ballSpeed
+    } else {
+        ballMovedX += ballSpeed
+    }
+    if (ballMovingUp) {
+        ballMovedY -= ballSpeed
+    } else {
+        ballMovedY += ballSpeed
+    }
+    ball.style.top = 'calc(' + gameWindow.offsetTop + 'px + 40vw + ' + ballMovedY + 'vw)'
+    ball.style.left = 'calc(' + gameWindow.offsetLeft + 'px + 41.5vw + ' + ballMovedX + 'vw)'
 }, 16.666);
