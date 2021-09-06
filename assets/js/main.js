@@ -36,7 +36,7 @@ player.style.left = 'calc(' + gameWindow.offsetLeft + 'px + 34vw)'
 let ball = document.createElement('div')
 ball.id = 'ball'
 gameWindow.appendChild(ball)
-ball.style.top = 'calc(' + gameWindow.offsetTop + 'px + 40vw)'
+ball.style.top = 'calc(' + gameWindow.offsetTop + 'px + 39vw)'
 ball.style.left = 'calc(' + gameWindow.offsetLeft + 'px + 41.5vw)'
 
 // Get inputs
@@ -63,21 +63,24 @@ window.addEventListener('keyup', (key) => {
 
 let playerSpeed = 0.8
 let playerMoved = 0
-let ballSpeed = 0.6
+let ballSpeedX = 0.6
+let ballSpeedY = 0.6
 let ballMovedX = 0
 let ballMovedY = 0
 let ballMovingUp = true
 let ballMovingLeft = true
-let hitBrick = false
+let started = false
 setInterval(() => {
     // Move player
     if (movingLeft) {
         player.style.left = 'calc(' + gameWindow.offsetLeft + 'px + 34vw + ' + playerMoved + 'vw)'
         playerMoved -= playerSpeed
+        started = true
     }
     else if (movingRight) {
         player.style.left = 'calc(' + gameWindow.offsetLeft + 'px + 34vw + ' + playerMoved + 'vw)'
         playerMoved += playerSpeed
+        started = true
     }
     if (playerMoved > 34) {
         playerMoved = 34
@@ -85,36 +88,46 @@ setInterval(() => {
     else if (playerMoved < -34) {
         playerMoved = -34
     }
-    // Set ball movement variables
-    if (gameWindow.offsetTop > ball.offsetTop || gameWindow.offsetHeight + gameWindow.offsetTop - ball.offsetHeight < ball.offsetTop) {
-        if (ball.offsetLeft > player.offsetLeft && ball.offsetLeft < player.offsetLeft + player.offsetWidth)
-            ballMovingUp = !ballMovingUp
+    // Set ball movement
+    if (gameWindow.offsetTop > ball.offsetTop || gameWindow.offsetHeight + gameWindow.offsetTop < ball.offsetTop) {
+        ball.remove()
+    }
+    if (ball.offsetLeft > player.offsetLeft && ball.offsetLeft < player.offsetLeft + player.offsetWidth && gameWindow.offsetHeight + gameWindow.offsetTop < ball.offsetTop + ball.offsetHeight * 2.5) {
+        ballMovingUp = !ballMovingUp
+        ballSpeedX = 0.6
+        if (ball.offsetLeft > player.offsetLeft + player.offsetWidth / 3 && ball.offsetLeft < player.offsetLeft + player.offsetWidth - player.offsetWidth / 3) {
+            ballSpeedX /= 2
+        }
+        else if (ball.offsetLeft > player.offsetLeft && ball.offsetLeft < player.offsetLeft + player.offsetWidth - player.offsetWidth / 3 * 2) {
+            ballMovingLeft = true
+        }
+        else if (ball.offsetLeft > player.offsetLeft + player.offsetWidth / 3 * 2 && ball.offsetLeft < player.offsetLeft + player.offsetWidth) {
+            ballMovingLeft = false
+        }
     }
     if (ball.offsetLeft < gameWindow.offsetLeft || gameWindow.offsetWidth + gameWindow.offsetLeft - ball.offsetWidth < ball.offsetLeft) {
         ballMovingLeft = !ballMovingLeft
     }
-    // Hitting bricks
+    // Hit bricks
     for (i of bricks) {
-        if (ball.offsetTop < i.offsetTop + i.offsetHeight && ball.offsetLeft > i.offsetLeft && ball.offsetLeft < i.offsetLeft + i.offsetWidth && !hitBrick) {
+        if (ball.offsetTop - ball.offsetHeight < i.offsetTop + i.offsetHeight && ball.offsetTop - ball.offsetHeight > i.offsetTop && ball.offsetLeft > i.offsetLeft && ball.offsetLeft < i.offsetLeft + i.offsetWidth) {
             ballMovingUp = !ballMovingUp
             i.remove()
-            hitBrick = true
-        }
-        else {
-            hitBrick = false
         }
     }
     // Move ball
-    if (ballMovingLeft) {
-        ballMovedX -= ballSpeed
-    } else {
-        ballMovedX += ballSpeed
+    if (started) {
+        if (ballMovingLeft) {
+            ballMovedX -= ballSpeedX
+        } else {
+            ballMovedX += ballSpeedX
+        }
+        if (ballMovingUp) {
+            ballMovedY -= ballSpeedY
+        } else {
+            ballMovedY += ballSpeedY
+        }
+        ball.style.top = 'calc(' + gameWindow.offsetTop + 'px + 40vw + ' + ballMovedY + 'vw)'
+        ball.style.left = 'calc(' + gameWindow.offsetLeft + 'px + 41.5vw + ' + ballMovedX + 'vw)'
     }
-    if (ballMovingUp) {
-        ballMovedY -= ballSpeed
-    } else {
-        ballMovedY += ballSpeed
-    }
-    ball.style.top = 'calc(' + gameWindow.offsetTop + 'px + 40vw + ' + ballMovedY + 'vw)'
-    ball.style.left = 'calc(' + gameWindow.offsetLeft + 'px + 41.5vw + ' + ballMovedX + 'vw)'
 }, 16.666);
