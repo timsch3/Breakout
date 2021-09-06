@@ -24,6 +24,13 @@ gameWindow.appendChild(player)
 player.style.top = 'calc(' + gameWindow.offsetTop + 'px + 41vw)'
 player.style.left = 'calc(' + gameWindow.offsetLeft + 'px + 34vw)'
 
+// Add ball and set its position
+let ball = document.createElement('div')
+ball.id = 'ball'
+gameWindow.appendChild(ball)
+ball.style.top = 'calc(' + gameWindow.offsetTop + 'px + 40vw)'
+ball.style.left = 'calc(' + gameWindow.offsetLeft + 'px + 41.5vw)'
+
 // Get inputs
 let movingRight = false
 let movingLeft = false
@@ -64,4 +71,6 @@ setInterval(() => {
     else if (moved < -34) {
         moved = -34
     }
+    // Move ball
+
 }, 16.666);
