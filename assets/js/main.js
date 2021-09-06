@@ -63,7 +63,7 @@ window.addEventListener('keyup', (key) => {
 
 let playerSpeed = 0.8
 let playerMoved = 0
-let ballSpeed = 0.8
+let ballSpeed = 0.6
 let ballMovedX = 0
 let ballMovedY = 0
 let ballMovingUp = true
@@ -87,11 +87,13 @@ setInterval(() => {
     }
     // Set ball movement variables
     if (gameWindow.offsetTop > ball.offsetTop || gameWindow.offsetHeight + gameWindow.offsetTop - ball.offsetHeight < ball.offsetTop) {
-        ballMovingUp = !ballMovingUp
+        if (ball.offsetLeft > player.offsetLeft && ball.offsetLeft < player.offsetLeft + player.offsetWidth)
+            ballMovingUp = !ballMovingUp
     }
     if (ball.offsetLeft < gameWindow.offsetLeft || gameWindow.offsetWidth + gameWindow.offsetLeft - ball.offsetWidth < ball.offsetLeft) {
         ballMovingLeft = !ballMovingLeft
     }
+    // Hitting bricks
     for (i of bricks) {
         if (ball.offsetTop < i.offsetTop + i.offsetHeight && ball.offsetLeft > i.offsetLeft && ball.offsetLeft < i.offsetLeft + i.offsetWidth && !hitBrick) {
             ballMovingUp = !ballMovingUp
