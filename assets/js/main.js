@@ -4,7 +4,7 @@ let bricks = []
 // Add divs
 for (let i = 1; i <= 18; i++) {
     let div = document.createElement('div')
-    div.id = 'brick'
+    div.classList.add('brick')
     if (i <= 6) {
         div.style.gridRowStart = 1
         div.style.gridRowEnd = 2
