@@ -89,8 +89,14 @@ setInterval(() => {
         playerMoved = -34
     }
     // Set ball movement
-    if (gameWindow.offsetTop > ball.offsetTop || gameWindow.offsetHeight + gameWindow.offsetTop < ball.offsetTop) {
+    if (gameWindow.offsetTop > ball.offsetTop) {
+        ballMovingUp = !ballMovingUp
+    }
+    if (ball.offsetTop > gameWindow.offsetTop + gameWindow.offsetHeight) {
         ball.remove()
+    }
+    if (ball.offsetLeft < gameWindow.offsetLeft || gameWindow.offsetWidth + gameWindow.offsetLeft - ball.offsetWidth < ball.offsetLeft) {
+        ballMovingLeft = !ballMovingLeft
     }
     if (ball.offsetLeft > player.offsetLeft && ball.offsetLeft < player.offsetLeft + player.offsetWidth && gameWindow.offsetHeight + gameWindow.offsetTop < ball.offsetTop + ball.offsetHeight * 2.5) {
         ballMovingUp = !ballMovingUp
@@ -104,9 +110,6 @@ setInterval(() => {
         else if (ball.offsetLeft > player.offsetLeft + player.offsetWidth / 3 * 2 && ball.offsetLeft < player.offsetLeft + player.offsetWidth) {
             ballMovingLeft = false
         }
-    }
-    if (ball.offsetLeft < gameWindow.offsetLeft || gameWindow.offsetWidth + gameWindow.offsetLeft - ball.offsetWidth < ball.offsetLeft) {
-        ballMovingLeft = !ballMovingLeft
     }
     // Hit bricks
     for (i of bricks) {
